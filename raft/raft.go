@@ -752,8 +752,10 @@ func (r *raft) Step(m pb.Message) error {
 
 			r.logger.Infof("%x is starting a new election at term %d", r.id, r.Term)
 			if r.preVote {
+				r.event.Record(gorumsraft.EventPreElection)
 				r.campaign(campaignPreElection)
 			} else {
+				r.event.Record(gorumsraft.EventElection)
 				r.campaign(campaignElection)
 			}
 		} else {
